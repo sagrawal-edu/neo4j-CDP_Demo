@@ -1,0 +1,320 @@
+//Step 4: Create Product Catalog
+//Create Mattresses
+
+
+
+// King size mattress
+CREATE (p1:Product {
+productId: 'PROD-001',
+name: 'Premium King Mattress',
+category: 'Mattress',
+subcategory: 'King',
+price: 1299.99,
+material: 'Memory Foam',
+firmness: 'Medium-Firm',
+warranty: '10 years',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p1;
+
+
+// Queen size mattress
+CREATE (p2:Product{
+productId: 'PROD-002',
+name: 'Comfort Queen Mattress',
+category: 'Mattress',
+subcategory: 'Queen',
+price: 999.99,
+material: 'Hybrid Spring',
+firmness: 'Plush',
+warranty: '10 years',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p2;
+
+
+//Create Bed Frames
+// King bed frame
+CREATE (p3:Product{
+productId: 'PROD-003',
+name: 'Modern King Bed Frame',
+category: 'BedFrame',
+subcategory: 'King',
+price: 599.99,
+material: 'Solid Oak Wood',
+color: 'Natural Wood',
+style: 'Modern',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p3;
+
+
+// Queen bed frame
+CREATE (p4:Product{
+productId: 'PROD-004',
+name: 'Classic Queen Bed Frame',
+category: 'BedFrame',
+subcategory: 'Queen',
+price: 499.99,
+material: 'Pine Wood',
+color: 'Espresso',
+style: 'Traditional',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p4;
+
+
+//Create Bed Covers
+// Vibrant color bed cover
+CREATE (p5:Product{
+productId: 'PROD-005',
+name: 'Vibrant Sunset Bed Cover',
+category: 'BedCover',
+subcategory: 'King',
+price: 149.99,
+material: 'Egyptian Cotton',
+color: 'Vibrant Orange/Red',
+colorFamily: 'Vibrant',
+threadCount: 800,
+pattern: 'Sunset Gradient',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p5;
+
+
+// Neutral bed cover
+CREATE (p6:Product{
+productId: 'PROD-006',
+name: 'Elegant White Bed Cover',
+category: 'BedCover',
+subcategory: 'Queen',
+price: 129.99,
+material: 'Organic Cotton',
+color: 'Pure White',
+colorFamily: 'Neutral',
+threadCount: 600,
+pattern: 'Solid',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p6;
+
+
+// Another vibrant bed cover
+CREATE (p7:Product{
+productId: 'PROD-007',
+name: 'Tropical Paradise Bed Cover',
+category: 'BedCover',
+subcategory: 'King',
+price: 159.99,
+material: 'Microfiber',
+color: 'Vibrant Turquoise/Yellow',
+colorFamily: 'Vibrant',
+threadCount: 700,
+pattern: 'Tropical Print',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p7
+
+
+//Create Pillows
+// Standard pillow
+CREATE (p8:Product{
+productId: 'PROD-008',
+name: 'Cloud Comfort Pillow',
+category: 'Pillow',
+subcategory: 'Standard',
+price: 79.99,
+material: 'Memory Foam',
+firmness: 'Medium',
+hypoallergenic: true,
+inStock: true,
+createdAt: datetime()
+})
+RETURN p8;
+
+
+// Body pillow
+CREATE (p9:Product{
+productId: 'PROD-009',
+name: 'Full Body Support Pillow',
+category: 'Pillow',
+subcategory: 'Body',
+price: 99.99,
+material: 'Shredded Memory Foam',
+firmness: 'Adjustable',
+hypoallergenic: true,
+inStock: true,
+createdAt: datetime()
+})
+RETURN p9;
+
+
+//Create Pillow Covers
+// Vibrant pillow cover
+CREATE (p10:Product{
+productId: 'PROD-010',
+name: 'Vibrant Fiesta Pillow Cover',
+category: 'PillowCover',
+subcategory: 'Standard',
+price: 29.99,
+material: 'Silk Blend',
+color: 'Vibrant Red/Gold',
+colorFamily: 'Vibrant',
+pattern: 'Fiesta Design',
+inStock: true,
+createdAt: datetime()})
+RETURN p10;
+
+
+// Neutral pillow cover
+CREATE (p11:Product{
+productId: 'PROD-011',
+name: 'Classic Beige Pillow Cover',
+category: 'PillowCover',
+subcategory: 'Standard',
+price: 24.99,
+material: 'Linen',
+color: 'Beige',
+colorFamily: 'Neutral',
+pattern: 'Solid',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p11;
+
+
+// Another vibrant pillow cover
+CREATE (p12:Product{
+productId: 'PROD-012',
+name: 'Electric Dreams Pillow Cover',
+category: 'PillowCover',
+subcategory: 'Standard',
+price: 34.99,
+material: 'Velvet',
+color: 'Vibrant Purple/Pink',
+colorFamily: 'Vibrant',
+pattern: 'Abstract Art',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p12;
+
+
+//Create Paintings
+// Vibrant abstract painting
+CREATE (p13:Product{
+productId: 'PROD-013',
+name: 'Abstract Vibrance Wall Art',
+category: 'Painting',
+subcategory: 'Abstract',
+price: 299.99,
+size: '36x48 inches',
+color: 'Vibrant Multi-Color',
+colorFamily: 'Vibrant',
+artist: 'Marina Rodriguez',
+style: 'Contemporary Abstract',
+frameIncluded: true,
+inStock: true,
+createdAt: datetime()})
+RETURN p13;
+
+
+// Vibrant landscape painting
+CREATE (p14:Product{
+productId: 'PROD-014',
+name: 'Sunset Over Mountains',
+category: 'Painting',
+subcategory: 'Landscape',
+price: 349.99,
+size: '40x30 inches',
+color: 'Vibrant Orange/Purple',
+colorFamily: 'Vibrant',
+artist: 'James Chen',
+style: 'Impressionist',
+frameIncluded: true,
+inStock: true,
+createdAt: datetime()
+})
+RETURN p14;
+
+
+// Neutral painting
+CREATE (p15:Product{
+productId: 'PROD-015',
+name: 'Minimalist Serenity',
+category: 'Painting',
+subcategory: 'Minimalist',
+price: 249.99,
+size: '30x40 inches',
+color: 'Black/White/Gray',
+colorFamily: 'Neutral',
+artist: 'Sarah Johnson',
+style: 'Minimalist',
+frameIncluded: true,
+inStock: true,
+createdAt: datetime()
+})
+RETURN p15;
+
+
+//Create Additional Home Decor
+// Vibrant decorative vase
+CREATE (p16:Product{
+productId: 'PROD-016',
+name: 'Bohemian Ceramic Vase',
+category: 'HomeDecor',
+subcategory: 'Vase',
+price: 89.99,
+material: 'Hand-Painted Ceramic',
+color: 'Vibrant Teal/Gold',
+colorFamily: 'Vibrant',
+height: '14 inches',
+style: 'Bohemian',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p16;
+
+
+// Vibrant throw blanket
+CREATE (p17:Product {
+productId: 'PROD-017',
+name: 'Colorful Aztec Throw Blanket',
+category: 'HomeDecor',
+subcategory: 'Throw',
+price: 79.99,
+material: 'Woven Cotton',
+color: 'Vibrant Multi-Color Aztec',
+colorFamily: 'Vibrant',
+size: '50x60 inches',
+pattern: 'Aztec Geometric',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p17;
+
+
+// Neutral decorative mirror
+CREATE (p18:Product {
+productId: 'PROD-018',
+name: 'Modern Round Mirror',
+category: 'HomeDecor',
+subcategory: 'Mirror',
+price: 149.99,
+material: 'Metal Frame',
+color: 'Matte Black',
+colorFamily: 'Neutral',
+diameter: '32 inches',
+style: 'Modern',
+inStock: true,
+createdAt: datetime()
+})
+RETURN p18;
+

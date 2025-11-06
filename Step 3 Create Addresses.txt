@@ -1,0 +1,158 @@
+//Step 3: Create Addresses
+//Create Addresses for Main Customer
+
+
+
+// Ship-to address for main customer
+CREATE (addr1:Address {
+addressId: 'ADDR-001',
+type: 'ShipTo',
+street: '1250 Innovation Drive',
+city: 'San Francisco',
+state: 'CA',
+zipCode: '94103',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+RETURN addr1;
+
+
+// Bill-to address for main customer
+CREATE (addr2:Address {
+addressId: 'ADDR-002',
+type: 'BillTo',
+street: '1250 Innovation Drive, Suite 400',
+city: 'San Francisco',
+state: 'CA',
+zipCode: '94103',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+RETURN addr2;
+
+
+// Pay-to address for main customer
+CREATE (addr3:Address {
+addressId: 'ADDR-003',
+type: 'PayTo',
+street: 'PO Box 98765',
+city: 'San Francisco',
+state: 'CA',
+zipCode: '94104',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+RETURN addr3;
+
+
+//Link Addresses to Main Customer
+// Create SHIPS_TO relationship
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (addr:Address {addressId: 'ADDR-001'})
+CREATE (c)-[r:SHIPS_TO {since: date('1995-08-01'), isDefault: true}]->(addr)
+RETURN c, r, addr;
+
+
+// Create BILLS_TO relationship
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (addr:Address {addressId: 'ADDR-002'})
+CREATE (c)-[r:BILLS_TO {since: date('1995-08-01'), isDefault: true}]->(addr)
+RETURN c, r, addr;
+
+
+// Create PAYS_TO relationship
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (addr:Address {addressId: 'ADDR-003'})
+CREATE (c)-[r:PAYS_TO {since: date('1995-08-01'), isDefault: true}]->(addr)
+RETURN c, r, addr;
+
+
+//Create Addresses for Wholly Owned Customer
+// Ship-to address
+CREATE (addr4:Address {
+addressId: 'ADDR-004',
+type: 'ShipTo',
+street: '890 Sleep Boulevard',
+city: 'Seattle',
+state: 'WA',
+zipCode: '98101',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+RETURN addr4;
+
+
+// Bill-to address
+CREATE (addr5:Address {
+addressId: 'ADDR-005',
+type: 'BillTo',
+street: '890 Sleep Boulevard, Finance Dept',
+city: 'Seattle',
+state: 'WA',
+zipCode: '98101',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+RETURN addr5;
+
+
+// Pay-to address
+CREATE (addr6:Address {
+addressId: 'ADDR-006',
+type: 'PayTo',
+street: 'PO Box 45678',
+city: 'Seattle',
+state: 'WA',
+zipCode: '98102',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+RETURN addr6;
+
+
+//Link Addresses to Wholly Owned Customer
+MATCH (c:Customer {customerId: 'CUST-004'})
+MATCH (addr1:Address {addressId: 'ADDR-004'})
+MATCH (addr2:Address {addressId: 'ADDR-005'})
+MATCH (addr3:Address {addressId: 'ADDR-006'})
+CREATE (c)-[:SHIPS_TO {since: date('2020-01-10'), isDefault: true}]->(addr1)
+CREATE (c)-[:BILLS_TO {since: date('2020-01-10'), isDefault: true}]->(addr2)
+CREATE (c)-[:PAYS_TO {since: date('2020-01-10'), isDefault: true}]->(addr3)
+RETURN c, addr1, addr2, addr3;
+
+
+//Create Addresses for Subsidiary Customer
+// Create and link all addresses for subsidiary
+CREATE (addr7:Address {
+addressId: 'ADDR-007',
+type: 'ShipTo',
+street: '456 Comfort Lane',
+city: 'Portland',
+state: 'OR',
+zipCode: '97201',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+CREATE (addr8:Address {
+addressId: 'ADDR-008',
+type: 'BillTo',
+street: '456 Comfort Lane, Billing',
+city: 'Portland',
+state: 'OR',
+zipCode: '97201',
+country: 'USA',
+isPrimary: true,
+createdAt: datetime()
+})
+WITH addr7, addr8
+MATCH (c:Customer {customerId: 'CUST-003'})
+CREATE (c)-[:SHIPS_TO {since: date('2019-06-20'), isDefault: true}]->(addr7)
+CREATE (c)-[:BILLS_TO {since: date('2019-06-20'), isDefault: true}]->(addr8)
+RETURN c, addr7, addr8;

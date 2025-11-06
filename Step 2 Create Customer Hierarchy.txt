@@ -1,0 +1,124 @@
+//Step 2: Create Customer Hierarchy
+
+
+
+//Create Main Customer (Parent Company)
+// Create the main parent company
+CREATE (main:Customer {
+customerId: 'CUST-001',
+name: 'Global Home Furnishings Inc.',
+type: 'Main',
+industry: 'Home Furnishings',
+annualRevenue: 500000000,
+foundedYear: 1995,
+createdAt: datetime()
+})
+RETURN main;
+
+
+//Create Affiliate Customer
+// Create an affiliate partner company
+CREATE (affiliate:Customer {
+customerId: 'CUST-002',
+name: 'Comfort Living Solutions',
+type: 'Affiliate',
+industry: 'Home Furnishings',
+annualRevenue: 75000000,
+foundedYear: 2010,
+affiliateStartDate: date('2018-03-15'),
+createdAt: datetime()
+})
+RETURN affiliate;
+
+
+//Create Subsidiary Customer
+// Create a partially-owned subsidiary
+CREATE (subsidiary:Customer {
+customerId: 'CUST-003',
+name: 'Elegant Bedding Co.',
+type: 'Subsidiary',
+industry: 'Bedding Manufacturing',
+annualRevenue: 35000000,
+foundedYear: 2005,
+ownershipPercentage: 60,
+acquisitionDate: date('2019-06-20'),
+createdAt: datetime()
+})
+RETURN subsidiary;
+
+
+//Create Wholly Owned Customer
+// Create a fully-owned subsidiary (previously was a subsidiary)
+CREATE (whollyOwned:Customer {
+customerId: 'CUST-004',
+name: 'Premium Sleep Systems',
+type: 'WhollyOwned',
+industry: 'Mattress Manufacturing',
+annualRevenue: 50000000,
+foundedYear: 2008,
+ownershipPercentage: 100,
+initialAcquisitionDate: date('2020-01-10'),
+fullAcquisitionDate: date('2023-07-15'),
+createdAt: datetime()
+})
+RETURN whollyOwned;
+
+
+//Create Relationships Between Customers
+// Main customer has affiliate relationship
+MATCH (main:Customer {customerId: 'CUST-001'})
+MATCH (affiliate:Customer {customerId: 'CUST-002'})
+CREATE (affiliate)-[r:AFFILIATE_OF {
+since: date('2018-03-15'),
+partnershipType: 'Strategic Alliance',
+commissionRate: 0.12
+}]->(main)
+RETURN main, r, affiliate;
+
+
+// Main customer acquired subsidiary
+MATCH (main:Customer {customerId: 'CUST-001'})
+MATCH (subsidiary:Customer {customerId: 'CUST-003'})
+CREATE (subsidiary)-[r:SUBSIDIARY_OF {
+since: date('2019-06-20'),
+ownershipPercentage: 60,
+acquisitionPrice: 21000000,
+acquisitionType: 'Partial Acquisition'
+}]->(main)
+RETURN main, r, subsidiary;
+
+
+// Create the acquisition timeline for wholly owned company
+// Step 1: Initial subsidiary relationship (60% ownership)
+MATCH (main:Customer {customerId: 'CUST-001'})
+MATCH (whollyOwned:Customer {customerId: 'CUST-004'})
+CREATE (whollyOwned)-[r1:ACQUIRED_BY {
+acquisitionDate: date('2020-01-10'),
+ownershipPercentage: 60,
+acquisitionPrice: 30000000,
+acquisitionType: 'Initial Partial Acquisition',
+status: 'Historical'
+}]->(main)
+RETURN main, r1, whollyOwned;
+
+
+// Step 2: Full acquisition (100% ownership)
+MATCH (main:Customer {customerId: 'CUST-001'})
+MATCH (whollyOwned:Customer {customerId: 'CUST-004'})
+CREATE (whollyOwned)-[r2:WHOLLY_OWNED_BY {
+since: date('2023-07-15'),
+ownershipPercentage: 100,
+additionalAcquisitionPrice: 20000000,
+totalAcquisitionPrice: 50000000,
+acquisitionType: 'Full Acquisition',
+status: 'Current'
+}]->(main)
+RETURN main, r2, whollyOwned;
+
+
+//Verification Query:
+// Verify the complete customer hierarchy
+MATCH (main:Customer {type: 'Main'})
+OPTIONAL MATCH (main)<-[r]-(related:Customer)
+RETURN main, r, related;
+

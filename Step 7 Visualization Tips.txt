@@ -1,0 +1,54 @@
+//Step 7: Visualization Tips
+
+
+
+// Beautiful visualization of the entire customer ecosystem
+MATCH (main:Customer {type: 'Main'})<-[r]-(related:Customer)
+RETURN main, r, related;
+
+
+
+// Full customer profile with addresses and orders
+MATCH (c:Customer {customerId: 'CUST-001'})
+OPTIONAL MATCH (c)-[r1]->(addr:Address)
+OPTIONAL MATCH (c)-[r2]->(o:Order)-[r3]->(p:Product)
+RETURN c, r1, addr, r2, o, r3, p
+LIMIT 50;
+
+
+// Show mattress purchases and recommended accessories
+MATCH (c:Customer)-[:PLACED_ORDER]->(o:Order)-[:CONTAINS]->(mattress:Product)
+WHERE mattress.category = 'Mattress'
+MATCH (accessory:Product)
+WHERE accessory.category IN ['BedCover', 'Pillow', 'PillowCover']
+  AND NOT EXISTS {
+    MATCH (c)-[:PLACED_ORDER]->(:Order)-[:CONTAINS]->(accessory)
+  }
+RETURN c, o, mattress, accessory
+LIMIT 25;
+
+
+// Visualize color preferences and recommendations
+MATCH (c:Customer)-[:PLACED_ORDER]->(oldOrder:Order)-[:CONTAINS]->(oldProduct:Product)
+WHERE oldProduct.colorFamily = 'Vibrant'
+MATCH (newProduct:Product {colorFamily: 'Vibrant'})
+WHERE NOT EXISTS {
+  MATCH (c)-[:PLACED_ORDER]->(:Order)-[:CONTAINS]->(newProduct)
+}
+RETURN c, oldOrder, oldProduct, newProduct
+LIMIT 30;
+
+
+// Show order timeline for a customer
+MATCH path = (c:Customer {customerId: 'CUST-001'})-[:PLACED_ORDER]->(o:Order)-[:CONTAINS]->(p:Product)
+RETURN path
+ORDER BY o.orderDate;
+
+
+// Find shortest path between two customers
+MATCH path = shortestPath
+(
+(c1:Customer {customerId: 'CUST-001'})-[*]-(c2:Customer {customerId: 'CUST-004'})
+)
+RETURN path;
+

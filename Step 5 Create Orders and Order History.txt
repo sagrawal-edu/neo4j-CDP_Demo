@@ -1,0 +1,152 @@
+//Step 5: Create Orders and Order History
+//Orders from Main Customer (Recent)
+
+
+
+// Recent order 1 - Mattress purchase (triggers bed accessory recommendations)
+CREATE (o1:Order {
+  orderId: 'ORD-001',
+  orderDate: date('2024-10-15'),
+  orderTime: datetime('2024-10-15T14:30:00'),
+  status: 'Delivered',
+  totalAmount: 1299.99,
+  paymentMethod: 'Corporate Credit',
+  deliveryDate: date('2024-10-22'),
+  createdAt: datetime()
+})
+RETURN o1;
+
+
+// Link order to main customer
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (o:Order {orderId: 'ORD-001'})
+CREATE (c)-[r:PLACED_ORDER {placedAt: datetime('2024-10-15T14:30:00')}]->(o)
+RETURN c, r, o;
+
+
+// Add mattress to the order
+MATCH (o:Order {orderId: 'ORD-001'})
+MATCH (p:Product {productId: 'PROD-001'})
+CREATE (o)-[r:CONTAINS {
+  quantity: 2,
+  unitPrice: 1299.99,
+  lineTotal: 2599.98,
+  discountApplied: 0
+}]->(p)
+RETURN o, r, p;
+
+
+// Recent order 2 - Bed frame only
+CREATE (o2:Order {
+  orderId: 'ORD-002',
+  orderDate: date('2024-10-18'),
+  orderTime: datetime('2024-10-18T11:15:00'),
+  status: 'In Transit',
+  totalAmount: 599.99,
+  paymentMethod: 'Corporate Credit',
+  estimatedDelivery: date('2024-11-10'),
+  createdAt: datetime()
+})
+WITH o2
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (p:Product {productId: 'PROD-003'})
+CREATE (c)-[:PLACED_ORDER {placedAt: datetime('2024-10-18T11:15:00')}]->(o2)
+CREATE (o2)-[:CONTAINS {quantity: 1, unitPrice: 599.99, lineTotal: 599.99, discountApplied: 0}]->(p)
+RETURN o2;
+
+
+// Old order with vibrant painting (triggers color preference recommendation)
+CREATE (o3:Order {
+  orderId: 'ORD-003',
+  orderDate: date('2023-08-20'),
+  orderTime: datetime('2023-08-20T09:45:00'),
+  status: 'Delivered',
+  totalAmount: 299.99,
+  paymentMethod: 'Corporate Credit',
+  deliveryDate: date('2023-08-28'),
+  createdAt: datetime()
+})
+WITH o3
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (p:Product {productId: 'PROD-013'})
+CREATE (c)-[:PLACED_ORDER {placedAt: datetime('2023-08-20T09:45:00')}]->(o3)
+CREATE (o3)-[:CONTAINS {quantity: 1, unitPrice: 299.99, lineTotal: 299.99, discountApplied: 0}]->(p)
+RETURN o3;
+
+
+// Another historical order with vibrant decor
+CREATE (o4:Order {
+  orderId: 'ORD-004',
+  orderDate: date('2023-09-10'),
+  orderTime: datetime('2023-09-10T16:20:00'),
+  status: 'Delivered',
+  totalAmount: 169.98,
+  paymentMethod: 'Corporate Credit',
+  deliveryDate: date('2023-09-18'),
+  createdAt: datetime()
+})
+WITH o4
+MATCH (c:Customer {customerId: 'CUST-001'})
+MATCH (p1:Product {productId: 'PROD-016'})
+MATCH (p2:Product {productId: 'PROD-017'})
+CREATE (c)-[:PLACED_ORDER {placedAt: datetime('2023-09-10T16:20:00')}]->(o4)
+CREATE (o4)-[:CONTAINS {quantity: 1, unitPrice: 89.99, lineTotal: 89.99, discountApplied: 0}]->(p1)
+CREATE (o4)-[:CONTAINS {quantity: 1, unitPrice: 79.99, lineTotal: 79.99, discountApplied: 0}]->(p2)
+RETURN o4;
+
+
+// Recent mattress order from wholly owned company
+CREATE (o5:Order {
+  orderId: 'ORD-005',
+  orderDate: date('2024-09-25'),
+  orderTime: datetime('2024-09-25T13:00:00'),
+  status: 'Delivered',
+  totalAmount: 999.99,
+  paymentMethod: 'Net 30',
+  deliveryDate: date('2024-10-02'),
+  createdAt: datetime()
+})
+WITH o5
+MATCH (c:Customer {customerId: 'CUST-004'})
+MATCH (p:Product {productId: 'PROD-002'})
+CREATE (c)-[:PLACED_ORDER {placedAt: datetime('2024-09-25T13:00:00')}]->(o5)
+CREATE (o5)-[:CONTAINS {quantity: 1, unitPrice: 999.99, lineTotal: 999.99, discountApplied: 0}]->(p)
+RETURN o5;
+
+
+// Old order with vibrant landscape painting
+CREATE (o6:Order {
+  orderId: 'ORD-006',
+  orderDate: date('2022-11-15'),
+  orderTime: datetime('2022-11-15T10:30:00'),
+  status: 'Delivered',
+  totalAmount: 349.99,
+  paymentMethod: 'Check',
+  deliveryDate: date('2022-11-23'),
+  createdAt: datetime()
+})
+WITH o6
+MATCH (c:Customer {customerId: 'CUST-004'})
+MATCH (p:Product {productId: 'PROD-014'})
+CREATE (c)-[:PLACED_ORDER {placedAt: datetime('2022-11-15T10:30:00')}]->(o6)
+CREATE (o6)-[:CONTAINS {quantity: 1, unitPrice: 349.99, lineTotal: 349.99, discountApplied: 0}]->(p)
+RETURN o6;
+
+
+// Recent order from subsidiary
+CREATE (o7:Order {
+  orderId: 'ORD-007',
+  orderDate: date('2024-10-05'),
+  orderTime: datetime('2024-10-05T15:45:00'),
+  status: 'Delivered',
+  totalAmount: 129.99,
+  paymentMethod: 'Wire Transfer',
+  deliveryDate: date('2024-10-12'),
+  createdAt: datetime()
+})
+WITH o7
+MATCH (c:Customer {customerId: 'CUST-003'})
+MATCH (p:Product {productId: 'PROD-006'})
+CREATE (c)-[:PLACED_ORDER {placedAt: datetime('2024-10-05T15:45:00')}]->(o7)
+CREATE (o7)-[:CONTAINS {quantity: 1, unitPrice: 129.99, lineTotal: 129.99, discountApplied: 0}]->(p)
+RETURN o7;

@@ -1,0 +1,87 @@
+//Step 6: Demonstration Queries
+
+
+
+// Show the entire customer hierarchy with all relationship types
+MATCH (main:Customer {type: 'Main'})
+OPTIONAL MATCH (main)<-[r]-(related:Customer)
+RETURN main.name AS MainCompany,
+       type(r) AS RelationshipType,
+       related.name AS RelatedCompany,
+       related.type AS CompanyType,
+       r.since AS Since,
+       r.ownershipPercentage AS Ownership
+ORDER BY RelationshipType, Since;
+
+
+// Get all addresses for the main customer
+MATCH (c:Customer {customerId: 'CUST-001'})-[r]->(addr:Address)
+RETURN c.name AS CustomerName,
+       type(r) AS AddressType,
+       addr.street AS Street,
+       addr.city AS City,
+       addr.state AS State,
+       addr.zipCode AS ZipCode,
+       r.isDefault AS IsDefault
+ORDER BY AddressType;
+
+
+// Get full order history with all items
+MATCH (c:Customer {customerId: 'CUST-001'})-[:PLACED_ORDER]->(o:Order)
+MATCH (o)-[contains:CONTAINS]->(p:Product)
+RETURN o.orderId AS OrderID,
+       o.orderDate AS OrderDate,
+       o.status AS Status,
+       p.name AS ProductName,
+       p.category AS Category,
+       contains.quantity AS Quantity,
+       contains.lineTotal AS LineTotal,
+       o.totalAmount AS OrderTotal
+ORDER BY o.orderDate DESC;
+
+
+//Get the primary customer detail
+MATCH (c:Customer {customerId: 'CUST-001'})
+RETURN c
+
+//Get the full customer graph along with relationships
+MATCH path = (c:Customer {customerId: 'CUST-001'})-[*1..2]-()
+RETURN path
+
+
+// Analyze purchase patterns over time to identify seasonal trends
+MATCH (c:Customer)-[:PLACED_ORDER]->(o:Order)-[:CONTAINS]->(p:Product)
+WITH c, o, p, 
+     duration.between(o.orderDate, date()).months AS monthsSincePurchase,
+     o.orderDate.year AS purchaseYear,
+     o.orderDate.month AS purchaseMonth
+RETURN c.name AS CustomerName,
+       purchaseYear AS Year,
+       purchaseMonth AS Month,
+       p.category AS Category,
+       count(p) AS ItemsPurchased,
+       sum(o.totalAmount) AS TotalSpent,
+       CASE
+         WHEN monthsSincePurchase > 12 THEN 'High Re-engagement Priority'
+         WHEN monthsSincePurchase > 6 THEN 'Medium Re-engagement Priority'
+         ELSE 'Recently Active'
+       END AS EngagementStatus
+ORDER BY CustomerName, Year DESC, Month DESC;
+
+
+// Find products frequently purchased together
+MATCH (o:Order)-[:CONTAINS]->(p1:Product)
+MATCH (o)-[:CONTAINS]->(p2:Product)
+WHERE id(p1) < id(p2)
+WITH p1, p2, count(o) AS timesPurchasedTogether
+WHERE timesPurchasedTogether >= 1
+RETURN p1.name AS Product1,
+       p1.category AS Category1,
+       p2.name AS Product2,
+       p2.category AS Category2,
+       timesPurchasedTogether AS Frequency,
+       CASE
+         WHEN p1.category = p2.category THEN 'Same Category'
+         ELSE 'Cross-Category'
+       END AS AffinityType
+ORDER BY Frequency DESC, Product1;

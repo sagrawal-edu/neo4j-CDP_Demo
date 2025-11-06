@@ -1,0 +1,48 @@
+//Step 1: Schema Setup
+//Create Constraints and Indexes
+//These constraints ensure data integrity and create indexes that dramatically improve query performance.
+
+
+// Create unique constraint on Customer ID
+CREATE CONSTRAINT customer_id_unique IF NOT EXISTS
+FOR (c:Customer) REQUIRE c.customerId IS UNIQUE;
+
+
+// Create unique constraint on Address ID
+CREATE CONSTRAINT address_id_unique IF NOT EXISTS
+FOR (a:Address) REQUIRE a.addressId IS UNIQUE;
+
+
+// Create unique constraint on Product ID
+CREATE CONSTRAINT product_id_unique IF NOT EXISTS
+FOR (p:Product) REQUIRE p.productId IS UNIQUE;
+
+
+// Create unique constraint on Order ID
+CREATE CONSTRAINT order_id_unique IF NOT EXISTS
+FOR (o:Order) REQUIRE o.orderId IS UNIQUE;
+
+
+// Create index on customer type for faster filtering
+CREATE INDEX customer_type_index IF NOT EXISTS
+FOR (c:Customer) ON (c.type);
+
+
+// Create index on product category for recommendation queries
+CREATE INDEX product_category_index IF NOT EXISTS
+FOR (p:Product) ON (p.category);
+
+
+// Create index on product color for color-based recommendations
+CREATE INDEX product_color_index IF NOT EXISTS
+FOR (p:Product) ON (p.color);
+
+
+// Create index on order date for temporal queries
+CREATE INDEX order_date_index IF NOT EXISTS
+FOR (o:Order) ON (o.orderDate);
+
+
+//Expected Result: You should see confirmation messages for each constraint and index created.
+
+
