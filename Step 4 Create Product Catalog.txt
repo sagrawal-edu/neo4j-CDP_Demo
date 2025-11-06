@@ -120,7 +120,7 @@ pattern: 'Tropical Print',
 inStock: true,
 createdAt: datetime()
 })
-RETURN p7
+RETURN p7;
 
 
 //Create Pillows
@@ -317,4 +317,5 @@ inStock: true,
 createdAt: datetime()
 })
 RETURN p18;
+
 
