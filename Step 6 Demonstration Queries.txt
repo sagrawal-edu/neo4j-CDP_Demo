@@ -42,11 +42,11 @@ ORDER BY o.orderDate DESC;
 
 //Get the primary customer detail
 MATCH (c:Customer {customerId: 'CUST-001'})
-RETURN c
+RETURN c;
 
 //Get the full customer graph along with relationships
 MATCH path = (c:Customer {customerId: 'CUST-001'})-[*1..2]-()
-RETURN path
+RETURN path;
 
 
 // Analyze purchase patterns over time to identify seasonal trends
@@ -84,4 +84,5 @@ RETURN p1.name AS Product1,
          WHEN p1.category = p2.category THEN 'Same Category'
          ELSE 'Cross-Category'
        END AS AffinityType
+
 ORDER BY Frequency DESC, Product1;
